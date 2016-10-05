@@ -4,9 +4,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _keys = require('babel-runtime/core-js/object/keys');
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _keys2 = _interopRequireDefault(_keys);
+
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _mongoObject = require('mongo-object');
 
@@ -58,7 +70,7 @@ function clean(ss, doc) {
   var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
   // By default, doc will be filtered and autoconverted
-  options = _extends({
+  options = (0, _extends3.default)({
     isModifier: (0, _utility.looksLikeModifier)(doc)
   }, ss._cleanOptions, options);
 
@@ -108,7 +120,7 @@ function clean(ss, doc) {
         if (options.autoConvert && def) {
           var newVal = (0, _convertToProperType2.default)(val, def.type);
           if (newVal !== undefined && newVal !== val) {
-            _SimpleSchema.SimpleSchema.debug && console.info('SimpleSchema.clean: autoconverted value ' + val + ' from ' + (typeof val === 'undefined' ? 'undefined' : _typeof(val)) + ' to ' + (typeof newVal === 'undefined' ? 'undefined' : _typeof(newVal)) + ' for ' + gKey);
+            _SimpleSchema.SimpleSchema.debug && console.info('SimpleSchema.clean: autoconverted value ' + val + ' from ' + (typeof val === 'undefined' ? 'undefined' : (0, _typeof3.default)(val)) + ' to ' + (typeof newVal === 'undefined' ? 'undefined' : (0, _typeof3.default)(newVal)) + ' for ' + gKey);
             val = newVal;
             this.updateValue(newVal);
           }
@@ -145,7 +157,7 @@ function clean(ss, doc) {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = removedPositions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = (0, _getIterator3.default)(removedPositions), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var removedPosition = _step.value;
 
           var lastBrace = removedPosition.lastIndexOf('[');
@@ -179,7 +191,7 @@ function clean(ss, doc) {
   // Ensure we don't have any operators set to an empty object
   // since MongoDB 2.6+ will throw errors.
   if (options.isModifier) {
-    Object.keys(cleanDoc || {}).forEach(function (op) {
+    (0, _keys2.default)(cleanDoc || {}).forEach(function (op) {
       if (_underscore2.default.isEmpty(cleanDoc[op])) delete cleanDoc[op];
     });
   }

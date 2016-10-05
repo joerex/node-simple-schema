@@ -4,7 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _isInteger = require('babel-runtime/core-js/number/is-integer');
+
+var _isInteger2 = _interopRequireDefault(_isInteger);
+
 var _SimpleSchema = require('../SimpleSchema');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function doNumberChecks(def, keyValue, op, expectsInteger) {
   // Is it a valid number?
@@ -23,7 +29,7 @@ function doNumberChecks(def, keyValue, op, expectsInteger) {
   }
 
   // Is it an integer if we expect an integer?
-  if (expectsInteger && !Number.isInteger(keyValue)) {
+  if (expectsInteger && !(0, _isInteger2.default)(keyValue)) {
     return { type: _SimpleSchema.SimpleSchema.ErrorTypes.MUST_BE_INTEGER };
   }
 }

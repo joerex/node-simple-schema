@@ -4,9 +4,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _keys = require('babel-runtime/core-js/object/keys');
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _keys2 = _interopRequireDefault(_keys);
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _includes = require('babel-runtime/core-js/array/includes');
+
+var _includes2 = _interopRequireDefault(_includes);
 
 var _underscore = require('underscore');
 
@@ -48,12 +60,12 @@ function setAutoValues(autoValueFunctions, mongoObject, isModifier, extendedAuto
     var affectedKey = this.key;
 
     // If already called for this key, skip it
-    if (Array.includes(doneKeys, affectedKey)) return;
+    if ((0, _includes2.default)(doneKeys, affectedKey)) return;
 
     var fieldParentName = (0, _utility.getParentOfKey)(affectedKey, true);
 
     var doUnset = false;
-    var autoValue = func.call(_extends({
+    var autoValue = func.call((0, _extends3.default)({
       isSet: this.value !== undefined,
       unset: function unset() {
         doUnset = true;
@@ -81,8 +93,8 @@ function setAutoValues(autoValueFunctions, mongoObject, isModifier, extendedAuto
     if (isModifier) {
       var op = void 0;
       var newValue = void 0;
-      if (autoValue && (typeof autoValue === 'undefined' ? 'undefined' : _typeof(autoValue)) === 'object') {
-        var avOperator = Object.keys(autoValue).find(function (avProp) {
+      if (autoValue && (typeof autoValue === 'undefined' ? 'undefined' : (0, _typeof3.default)(autoValue)) === 'object') {
+        var avOperator = (0, _keys2.default)(autoValue).find(function (avProp) {
           return avProp.substring(0, 1) === '$';
         });
         if (avOperator) {

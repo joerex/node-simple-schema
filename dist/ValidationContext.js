@@ -4,7 +4,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _mongoObject = require('mongo-object');
 
@@ -20,15 +34,13 @@ var _underscore2 = _interopRequireDefault(_underscore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 var ValidationContext = function () {
   function ValidationContext(ss) {
-    _classCallCheck(this, ValidationContext);
+    (0, _classCallCheck3.default)(this, ValidationContext);
 
     this._simpleSchema = ss;
     this._schema = ss.schema();
-    this._schemaKeys = Object.keys(this._schema);
+    this._schemaKeys = (0, _keys2.default)(this._schema);
     this._validationErrors = [];
 
     // Set up validation dependencies
@@ -42,7 +54,7 @@ var ValidationContext = function () {
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = this._schemaKeys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = (0, _getIterator3.default)(this._schemaKeys), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var key = _step.value;
 
           this._deps[key] = new tracker.Dependency();
@@ -64,7 +76,7 @@ var ValidationContext = function () {
     }
   }
 
-  _createClass(ValidationContext, [{
+  (0, _createClass3.default)(ValidationContext, [{
     key: '_markKeyChanged',
     value: function _markKeyChanged(key) {
       var genericKey = _mongoObject2.default.makeKeyGeneric(key);
@@ -80,7 +92,7 @@ var ValidationContext = function () {
       var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator2 = keys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        for (var _iterator2 = (0, _getIterator3.default)(keys), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var key = _step2.value;
 
           this._markKeyChanged(key);
@@ -124,7 +136,7 @@ var ValidationContext = function () {
       var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator3 = errors[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+        for (var _iterator3 = (0, _getIterator3.default)(errors), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
           var error = _step3.value;
 
           this._validationErrors.push(error);
@@ -243,7 +255,7 @@ var ValidationContext = function () {
             if (!wasValidated) validationErrors.push(error);
           };
 
-          for (var _iterator4 = this._validationErrors[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          for (var _iterator4 = (0, _getIterator3.default)(this._validationErrors), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
             _loop();
           }
         } catch (err) {
@@ -287,7 +299,6 @@ var ValidationContext = function () {
       return (_simpleSchema = this._simpleSchema).clean.apply(_simpleSchema, arguments);
     }
   }]);
-
   return ValidationContext;
 }();
 

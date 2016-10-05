@@ -3,6 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getParentOfKey = exports.forEachKeyAncestor = exports.looksLikeModifier = exports.isObjectWeShouldTraverse = exports.dateToDateString = exports.appendAffectedKey = undefined;
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function appendAffectedKey(affectedKey, key) {
   if (key === '$each') return affectedKey;
   return affectedKey ? affectedKey + '.' + key : key;
@@ -36,7 +44,7 @@ function isObjectWeShouldTraverse(val) {
 }
 
 function looksLikeModifier(obj) {
-  return !!Object.keys(obj || {}).find(function (key) {
+  return !!(0, _keys2.default)(obj || {}).find(function (key) {
     return key.substring(0, 1) === '$';
   });
 }

@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
 var _underscore = require('underscore');
 
 var _underscore2 = _interopRequireDefault(_underscore);
@@ -28,7 +32,7 @@ function requiredValidator() {
   // We can skip the required check for keys that are ancestors
   // of those in $set or $setOnInsert because they will be created
   // by MongoDB while setting.
-  var setKeys = Object.keys(this.obj.$set || {}).concat(Object.keys(this.obj.$setOnInsert || {}));
+  var setKeys = (0, _keys2.default)(this.obj.$set || {}).concat((0, _keys2.default)(this.obj.$setOnInsert || {}));
   var willBeCreatedAutomatically = _underscore2.default.some(setKeys, function (sk) {
     return sk.slice(0, _this.key.length + 1) === _this.key + '.';
   });

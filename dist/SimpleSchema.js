@@ -5,11 +5,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ValidationContext = exports.SimpleSchema = exports.schemaDefinitionOptions = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _assign = require('babel-runtime/core-js/object/assign');
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _assign2 = _interopRequireDefault(_assign);
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _mongoObject = require('mongo-object');
 
@@ -51,8 +69,6 @@ var _utility = require('./utility');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 // Exported for tests
 var schemaDefinitionOptions = exports.schemaDefinitionOptions = ['type', 'label', 'optional', 'required', 'autoValue', 'defaultValue'];
 
@@ -68,14 +84,12 @@ var SimpleSchema = function () {
   function SimpleSchema() {
     var schema = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    _classCallCheck(this, SimpleSchema);
-
+    (0, _classCallCheck3.default)(this, SimpleSchema);
     this.pick = getPickOrOmit('pick');
     this.omit = getPickOrOmit('omit');
 
     // Stash the options object
-    this._constructorOptions = _extends({}, options);
+    this._constructorOptions = (0, _extends3.default)({}, options);
     if (this._constructorOptions.humanizeAutoLabels !== false) this._constructorOptions.humanizeAutoLabels = true;
 
     // Custom validators for this instance
@@ -132,7 +146,7 @@ var SimpleSchema = function () {
     });
 
     // Schema-level defaults for cleaning
-    this._cleanOptions = _extends({
+    this._cleanOptions = (0, _extends3.default)({
       filter: true,
       autoConvert: true,
       removeEmptyStrings: true,
@@ -145,7 +159,7 @@ var SimpleSchema = function () {
     this.version = SimpleSchema.version;
   }
 
-  _createClass(SimpleSchema, [{
+  (0, _createClass3.default)(SimpleSchema, [{
     key: 'findFirstAncestorSimpleSchema',
     value: function findFirstAncestorSimpleSchema(key, func) {
       var _this = this;
@@ -559,7 +573,7 @@ var SimpleSchema = function () {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       return function (obj) {
-        var optionsClone = _extends({}, options);
+        var optionsClone = (0, _extends3.default)({}, options);
         if (options.clean === true) {
           // Do this here and pass into both functions for better performance
           optionsClone.mongoObject = new _mongoObject2.default(obj, _this7.blackboxKeys());
@@ -624,7 +638,7 @@ var SimpleSchema = function () {
           };
         }();
 
-        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+        if ((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object") return _ret.v;
       }
 
       // Get label for one field
@@ -675,7 +689,7 @@ var SimpleSchema = function () {
     // If you need to allow properties other than those listed above, call this from your app or package
     value: function extendOptions(options) {
       // For backwards compatibility we still take an object here, but we only care about the names
-      if (!Array.isArray(options)) options = Object.keys(options);
+      if (!Array.isArray(options)) options = (0, _keys2.default)(options);
       options.forEach(function (option) {
         schemaDefinitionOptions.push(option);
       });
@@ -724,7 +738,6 @@ var SimpleSchema = function () {
     // Backwards compatibility
 
   }]);
-
   return SimpleSchema;
 }();
 
@@ -770,7 +783,7 @@ function mergeSchemas(schemas) {
         if (def instanceof _SimpleSchemaGroup2.default) {
           mergedSchema[field] = def;
         } else {
-          Object.assign(mergedSchema[field], def);
+          (0, _assign2.default)(mergedSchema[field], def);
         }
       }
     });
@@ -821,7 +834,7 @@ function getDefaultAutoValueFunction(defaultValue) {
 }
 
 function checkAndScrubDefinition(fieldName, definition, options, fullSchemaObj) {
-  var internalDefinition = _extends({}, definition);
+  var internalDefinition = (0, _extends3.default)({}, definition);
 
   // Internally, all definition types are stored as groups for simplicity of access
   if (!(internalDefinition.type instanceof _SimpleSchemaGroup2.default)) {

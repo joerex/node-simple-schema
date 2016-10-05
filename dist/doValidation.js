@@ -4,9 +4,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _includes = require('babel-runtime/core-js/array/includes');
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _includes2 = _interopRequireDefault(_includes);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _mongoObject = require('mongo-object');
 
@@ -99,14 +119,14 @@ function doValidation(_ref) {
 
     var fieldValidationErrors = [];
 
-    var validatorContext = _extends({
+    var validatorContext = (0, _extends3.default)({
       addValidationErrors: function addValidationErrors(errors) {
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
 
         try {
-          for (var _iterator = errors[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          for (var _iterator = (0, _getIterator3.default)(errors), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var error = _step.value;
 
             fieldValidationErrors.push(error);
@@ -154,11 +174,11 @@ function doValidation(_ref) {
     // Loop through each of the definitions in the SimpleSchemaGroup.
     // If any return true, we're valid.
     var fieldIsValid = _underscore2.default.some(def.type, function (typeDef) {
-      var finalValidatorContext = _extends({}, validatorContext, {
+      var finalValidatorContext = (0, _extends3.default)({}, validatorContext, {
 
         // Take outer definition props like "optional" and "label"
         // and add them to inner props like "type" and "min"
-        definition: _extends({}, _underscore2.default.omit(def, 'type'), typeDef)
+        definition: (0, _extends3.default)({}, _underscore2.default.omit(def, 'type'), typeDef)
       });
 
       // Add custom field validators to the list after the built-in
@@ -186,8 +206,8 @@ function doValidation(_ref) {
 
         // If the validator returns an object, assume it is an
         // error object.
-        if ((typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object' && result !== null) {
-          fieldValidationErrors.push(_extends({
+        if ((typeof result === 'undefined' ? 'undefined' : (0, _typeof3.default)(result)) === 'object' && result !== null) {
+          fieldValidationErrors.push((0, _extends3.default)({
             name: affectedKey,
             value: val
           }, result));
@@ -264,7 +284,7 @@ function doValidation(_ref) {
       // Loop through object keys
 
       // Get list of present keys
-      var presentKeys = Object.keys(val);
+      var presentKeys = (0, _keys2.default)(val);
 
       // Check all present keys plus all keys defined by the schema.
       // This allows us to detect extra keys not allowed by the schema plus
@@ -295,7 +315,7 @@ function doValidation(_ref) {
     if ('$setOnInsert' in mod) {
       if (isUpsert) {
         mod.$set = mod.$set || {};
-        mod.$set = Object.assign(mod.$set, mod.$setOnInsert);
+        mod.$set = (0, _assign2.default)(mod.$set, mod.$setOnInsert);
       }
       delete mod.$setOnInsert;
     }
@@ -311,9 +331,9 @@ function doValidation(_ref) {
         // so we check them all with undefined value to force any 'required' checks to fail
         if (isUpsert && op === '$set') {
           (function () {
-            var presentKeys = Object.keys(opObj);
+            var presentKeys = (0, _keys2.default)(opObj);
             schema.objectKeys().forEach(function (schemaKey) {
-              if (!Array.includes(presentKeys, schemaKey)) {
+              if (!(0, _includes2.default)(presentKeys, schemaKey)) {
                 checkObj({
                   val: undefined,
                   affectedKey: schemaKey,
@@ -325,7 +345,7 @@ function doValidation(_ref) {
         }
         _underscore2.default.each(opObj, function (v, k) {
           if (op === '$push' || op === '$addToSet') {
-            if ((typeof v === 'undefined' ? 'undefined' : _typeof(v)) === 'object' && '$each' in v) {
+            if ((typeof v === 'undefined' ? 'undefined' : (0, _typeof3.default)(v)) === 'object' && '$each' in v) {
               v = v.$each;
             } else {
               k = k + '.0';
@@ -359,9 +379,9 @@ function doValidation(_ref) {
   var addedFieldNames = [];
   validationErrors = _underscore2.default.filter(validationErrors, function (errObj) {
     // Remove error types the user doesn't care about
-    if (Array.includes(ignoreTypes, errObj.type)) return false;
+    if ((0, _includes2.default)(ignoreTypes, errObj.type)) return false;
     // Make sure there is only one error per fieldName
-    if (Array.includes(addedFieldNames, errObj.name)) return false;
+    if ((0, _includes2.default)(addedFieldNames, errObj.name)) return false;
 
     addedFieldNames.push(errObj.name);
     return true;
