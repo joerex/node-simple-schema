@@ -39,7 +39,7 @@ var ValidationContext = function () {
     (0, _classCallCheck3.default)(this, ValidationContext);
 
     this._simpleSchema = ss;
-    this._schema = ss.schema();
+    this._schema = ss.mergedSchema();
     this._schemaKeys = (0, _keys2.default)(this._schema);
     this._validationErrors = [];
 

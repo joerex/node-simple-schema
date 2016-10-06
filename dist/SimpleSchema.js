@@ -78,7 +78,7 @@ var propsThatCanBeFunction = ['label', 'optional'];
 
 var oneOfPropsThatCanBeFunction = ['min', 'max', 'minCount', 'maxCount', 'allowedValues', 'exclusiveMin', 'exclusiveMax', 'regEx'];
 
-var regExpMessages = [{ exp: _regExp2.default.Email, msg: 'must be a valid email address' }, { exp: _regExp2.default.EmailWithTLD, msg: "must be a valid email address" }, { exp: _regExp2.default.Domain, msg: 'must be a valid domain' }, { exp: _regExp2.default.WeakDomain, msg: 'must be a valid domain' }, { exp: _regExp2.default.IP, msg: 'must be a valid IPv4 or IPv6 address' }, { exp: _regExp2.default.IPv4, msg: 'must be a valid IPv4 address' }, { exp: _regExp2.default.IPv6, msg: 'must be a valid IPv6 address' }, { exp: _regExp2.default.Url, msg: 'must be a valid URL' }, { exp: _regExp2.default.Id, msg: 'must be a valid alphanumeric ID' }, { exp: _regExp2.default.ZipCode, msg: 'must be a valid ZIP code' }, { exp: _regExp2.default.Phone, msg: 'must be a valid phone number' }];
+var regExpMessages = [{ exp: _regExp2.default.Email, msg: 'must be a valid email address' }, { exp: _regExp2.default.EmailWithTLD, msg: 'must be a valid email address' }, { exp: _regExp2.default.Domain, msg: 'must be a valid domain' }, { exp: _regExp2.default.WeakDomain, msg: 'must be a valid domain' }, { exp: _regExp2.default.IP, msg: 'must be a valid IPv4 or IPv6 address' }, { exp: _regExp2.default.IPv4, msg: 'must be a valid IPv4 address' }, { exp: _regExp2.default.IPv6, msg: 'must be a valid IPv6 address' }, { exp: _regExp2.default.Url, msg: 'must be a valid URL' }, { exp: _regExp2.default.Id, msg: 'must be a valid alphanumeric ID' }, { exp: _regExp2.default.ZipCode, msg: 'must be a valid ZIP code' }, { exp: _regExp2.default.Phone, msg: 'must be a valid phone number' }];
 
 var SimpleSchema = function () {
   function SimpleSchema() {
@@ -460,35 +460,57 @@ var SimpleSchema = function () {
       this._depsLabels = {};
       this._objectKeys = {};
 
+      var updateAllFields = function updateAllFields(curSchema) {
+        var schemaParentKey = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+        _underscore2.default.each(curSchema, function (definition, fieldName) {
+          fieldName = schemaParentKey ? schemaParentKey + '.' + fieldName : fieldName;
+
+          // Store child keys keyed by parent
+          if (fieldName.indexOf('.') > -1 && fieldName.slice(-2) !== '.$') {
+            var parentKey = fieldName.slice(0, fieldName.lastIndexOf('.'));
+            var parentKeyWithDot = parentKey + '.';
+            _this5._objectKeys[parentKeyWithDot] = _this5._objectKeys[parentKeyWithDot] || [];
+            _this5._objectKeys[parentKeyWithDot].push(fieldName.slice(fieldName.lastIndexOf('.') + 1));
+          }
+
+          // We only want to cache object keys for sub schemas.
+          // All other properties are fetched on demand
+          if (schemaParentKey) return;
+
+          _this5._schema[fieldName] = definition = checkAndScrubDefinition(fieldName, definition, _this5._constructorOptions, _this5._schema);
+
+          // Keep list of all keys for speedier checking
+          _this5._schemaKeys.push(fieldName);
+
+          // Keep list of all top level keys
+          if (fieldName.indexOf('.') === -1) _this5._firstLevelSchemaKeys.push(fieldName);
+
+          // Initialize label reactive dependency (Meteor only)
+          if (_this5._constructorOptions.tracker) {
+            _this5._depsLabels[fieldName] = new _this5._constructorOptions.tracker.Dependency();
+          }
+
+          // Keep list of all blackbox keys for passing to MongoObject constructor
+          if (definition.blackbox) _this5._blackboxKeys.push(fieldName);
+
+          // Keep list of autoValue functions by key
+          if (definition.autoValue) _this5._autoValues[fieldName] = definition.autoValue;
+
+          // If the current field is a nested SimpleSchema,
+          // iterate over the child fields and cache their properties as well
+          _underscore2.default.each(definition.type.definitions, function (_ref3) {
+            var type = _ref3.type;
+
+            if (type instanceof SimpleSchema) {
+              updateAllFields(type._schema, fieldName);
+            }
+          });
+        });
+      };
+
       // Update all of the information cached on the instance
-      _underscore2.default.each(this._schema, function (definition, fieldName) {
-        _this5._schema[fieldName] = definition = checkAndScrubDefinition(fieldName, definition, _this5._constructorOptions, _this5._schema);
-
-        // Keep list of all keys for speedier checking
-        _this5._schemaKeys.push(fieldName);
-
-        // Keep list of all top level keys
-        if (fieldName.indexOf('.') === -1) _this5._firstLevelSchemaKeys.push(fieldName);
-
-        // Initialize label reactive dependency (Meteor only)
-        if (_this5._constructorOptions.tracker) {
-          _this5._depsLabels[fieldName] = new _this5._constructorOptions.tracker.Dependency();
-        }
-
-        // Keep list of all blackbox keys for passing to MongoObject constructor
-        if (definition.blackbox) _this5._blackboxKeys.push(fieldName);
-
-        // Keep list of autoValue functions by key
-        if (definition.autoValue) _this5._autoValues[fieldName] = definition.autoValue;
-
-        // Store child keys keyed by parent
-        if (fieldName.indexOf('.') > -1 && fieldName.slice(-2) !== '.$') {
-          var parentKey = fieldName.slice(0, fieldName.lastIndexOf('.'));
-          var parentKeyWithDot = parentKey + '.';
-          _this5._objectKeys[parentKeyWithDot] = _this5._objectKeys[parentKeyWithDot] || [];
-          _this5._objectKeys[parentKeyWithDot].push(fieldName.slice(fieldName.lastIndexOf('.') + 1));
-        }
-      });
+      updateAllFields(this._schema);
     }
   }, {
     key: 'newContext',
@@ -850,9 +872,9 @@ function checkAndScrubDefinition(fieldName, definition, options, fullSchemaObj) 
   });
 
   // Make sure the `type`s are OK
-  internalDefinition.type.definitions.forEach(function (_ref3) {
-    var blackbox = _ref3.blackbox;
-    var type = _ref3.type;
+  internalDefinition.type.definitions.forEach(function (_ref4) {
+    var blackbox = _ref4.blackbox;
+    var type = _ref4.type;
 
     if (!type) throw new Error('Invalid definition for ' + fieldName + ' field: "type" option is required');
 
