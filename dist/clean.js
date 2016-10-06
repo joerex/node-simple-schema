@@ -113,7 +113,7 @@ function clean(ss, doc) {
           return; // no reason to do more
         }
 
-        var outerDef = ss._schema[gKey];
+        var outerDef = ss.mergedSchema()[gKey];
         var def = outerDef && outerDef.type.definitions[0];
 
         // Autoconvert values if requested and if possible

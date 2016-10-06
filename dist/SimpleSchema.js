@@ -797,8 +797,6 @@ function checkSchemaOverlap(schema) {
   _underscore2.default.each(schema, function (val, key) {
     _underscore2.default.each(val.type.definitions, function (def) {
       if (!(def.type instanceof SimpleSchema)) return;
-      console.log(key, def.type);
-
       _underscore2.default.each(def.type._schema, function (subVal, subKey) {
         var newKey = key + '.' + subKey;
         if (schema.hasOwnProperty(newKey)) {
