@@ -119,8 +119,36 @@ function setAutoValues(autoValueFunctions, mongoObject, isModifier, extendedAuto
       }
     }
 
+    // We want to traverse object paths (foo.bar) only if:
+    // 1. The document is not a mongo modifier
+    // or
+    // 2. The current position is not nested directly under a modifier like $push
+    //
+    // If we are directly under the modifier we want to use a nested path setter
+    // ex: $push: {
+    //  'foo.bar.baz': 3
+    // }
+    //
+    // but if we are actually setting a nested object we want to use an object setter
+    // ex: $push: {
+    //   foo: {
+    //     bar: {
+    //       baz: 3
+    //     }
+    //   }
+    // }
+    //
+    // The reason is that setting $push: {
+    //   foo: {
+    //     'bar.baz': 3
+    //   }
+    // }
+    //
+    // is illegal because mongo cannot have "." in its keys
+    var traverseObject = !isModifier || /\]\[/.test(this.position);
+
     // Update/change value
-    mongoObject.setValueForPosition(this.position, autoValue, !isModifier);
+    mongoObject.setValueForPosition(this.position, autoValue, traverseObject);
   }
 
   _underscore2.default.each(autoValueFunctions, function (_ref) {
