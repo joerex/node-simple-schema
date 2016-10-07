@@ -29,7 +29,7 @@
   "dependencies": {
     "clone": "^1.0.2",
     "message-box": "clayne11/node-message-box#038affbb8ac83f9bdbddecd9c60b895c8a66a0b0",
-    "mongo-object": "0.0.1",
+    "mongo-object": "clayne11/node-mongo-object#542a680a3a85d8a919acb994df01e45b1b569dc6",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
