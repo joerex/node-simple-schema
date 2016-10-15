@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "clone": "^1.0.2",
-    "message-box": "clayne11/node-message-box#038affbb8ac83f9bdbddecd9c60b895c8a66a0b0",
+    "message-box": "clayne11/node-message-box#57ac27cde88f898eeb3bcf6487f172606f9fdd5f",
     "mongo-object": "clayne11/node-mongo-object#542a680a3a85d8a919acb994df01e45b1b569dc6",
     "underscore": "^1.8.3"
   },
