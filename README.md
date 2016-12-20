@@ -95,7 +95,7 @@ If you are migrating from the Meteor package, refer to the [CHANGELOG](https://g
 ## Installation
 
 ```
-npm install simpl-schema
+npm install @clayne/simple-schema
 ```
 
 There are other NPM packages named `simpleschema` and `simple-schema`. Make sure you install the right package. There is no "e" on "simpl".
@@ -111,7 +111,7 @@ In this documentation:
 ### Validate an Object and Throw an Error
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 new SimpleSchema({
   name: String,
@@ -125,7 +125,7 @@ new SimpleSchema({
 An error is thrown for the first invalid object found.
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 new SimpleSchema({
   name: String,
@@ -138,7 +138,7 @@ new SimpleSchema({
 ### Validate an Object and Get the Errors
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const validationContext = new SimpleSchema({
   name: String,
@@ -155,7 +155,7 @@ console.log(validationContext.validationErrors());
 ### Validate a MongoDB Modifier
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const validationContext = new SimpleSchema({
   name: String,
@@ -174,7 +174,7 @@ console.log(validationContext.validationErrors());
 ### Enable Meteor Tracker Reactivity
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 import { Tracker } from 'meteor/tracker';
 
 const validationContext = new SimpleSchema({
@@ -202,7 +202,7 @@ TO DO
 ### Set Default Cleaning Options
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const mySchema = new SimpleSchema({
   name: String,
@@ -221,7 +221,7 @@ const mySchema = new SimpleSchema({
 ### Explicitly Clean an Object
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const mySchema = new SimpleSchema({ name: String });
 const doc = { name: 123 };
@@ -233,7 +233,7 @@ console.log(typeof cleanDoc.name); // string
 Works for a MongoDB modifier, too:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const mySchema = new SimpleSchema({ name: String });
 const modifier = { $set: { name: 123 } };
@@ -249,7 +249,7 @@ Let's get into some more details about the different syntaxes that are supported
 ### Shorthand Definitions
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   name: String,
@@ -265,7 +265,7 @@ This is referred to as "shorthand" syntax. You simply map a property name to a t
 In many cases, you will need to use longhand in order to define additional rules beyond what the data type should be.
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   name: {
@@ -288,7 +288,7 @@ const schema = new SimpleSchema({
 You can use any combination of shorthand and longhand:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   name: String,
@@ -342,7 +342,7 @@ is equivalent to:
 You can define two or more different ways in which a key will be considered valid:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   id: SimpleSchema.oneOf(String, SimpleSchema.Integer),
@@ -353,7 +353,7 @@ const schema = new SimpleSchema({
 And this can be done in any mixture of shorthand and longhand:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   id: SimpleSchema.oneOf({
@@ -375,7 +375,7 @@ NOTE: Multiple definitions is still an experimental feature and may not work as 
 If there are certain fields that are repeated in many of your schemas, it can be useful to define a SimpleSchema instance just for those fields and then merge them into other schemas:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 import { idSchema, addressSchema } from './sharedSchemas';
 
 const schema = new SimpleSchema({
@@ -390,7 +390,7 @@ schema.extend(addressSchema);
 If the key appears in both schemas, the definition will be extended such that the result is the combination of both definitions.
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 import { idSchema, addressSchema } from './sharedSchemas';
 
 const schema = new SimpleSchema({
@@ -426,7 +426,7 @@ Note also that a plain object was passed to `extend`. If you pass a plain object
 Similar to extending, you can also reference other schemas as a way to define objects that occur within the main object:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 import { addressSchema } from './sharedSchemas';
 
 const schema = new SimpleSchema({
@@ -444,7 +444,7 @@ const schema = new SimpleSchema({
 Sometimes you have one large SimpleSchema object, and you need just a subset of it for some purpose. To pull out certain schema keys into a new schema, you can use the `pick` method:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   firstName: String,
@@ -462,7 +462,7 @@ A basic schema key is just the name of the key (property) to expect in the objec
 Use string keys with MongoDB-style dot notation to validate nested arrays and objects. For example:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   mailingAddress: Object,
@@ -474,7 +474,7 @@ const schema = new SimpleSchema({
 To indicate array items, use a `$`:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   addresses: {
@@ -666,7 +666,7 @@ It's usually best to use a named validation context. That way, the context is au
 Here is an example of obtaining a named validation context:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   name: String,
@@ -682,7 +682,7 @@ The first time you request a context with a certain name, it is created. Calling
 To obtain an unnamed validation context, call `newContext()`:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   name: String,
@@ -726,7 +726,7 @@ This method returns `true` only if all the specified schema keys and their desce
 #### Customize the Error That is Thrown
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 SimpleSchema.defineValidationErrorTransform(error => {
   const customError = new MyCustomErrorType(error.message);
@@ -748,7 +748,7 @@ SimpleSchema.addValidator(myFunction);
 To add a custom validation function that is called for ALL keys for ONE schema:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({ ... });
 schema.addValidator(myFunction);
@@ -757,7 +757,7 @@ schema.addValidator(myFunction);
 To add a custom validation function that is called for ONE key in ONE schema:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({
   someKey: {
@@ -790,7 +790,7 @@ on the client, refer to the [Asynchronous Custom Validation on the Client](#asyn
 Add a validator for all schemas:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 SimpleSchema.addDocValidator(obj => {
   // Must return an array, potentially empty, of objects with `name` and `type` string properties and optional `value` property.
@@ -803,7 +803,7 @@ SimpleSchema.addDocValidator(obj => {
 Add a validator for one schema:
 
 ```js
-import SimpleSchema from 'simpl-schema';
+import SimpleSchema from '@clayne/simple-schema';
 
 const schema = new SimpleSchema({ ... });
 schema.addDocValidator(obj => {
