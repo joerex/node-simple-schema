@@ -881,7 +881,7 @@ There may be a `message` property, but usually the error message is constructed 
 
 ## Customizing Validation Messages
 
-Error messages are managed by the [message-box](https://github.com/aldeed/node-message-box) package. You can set global defaults using `MessageBox.defaults`, and you can access the instance used by a schema at `simpleSchemaInstance.messageBox`;
+Error messages are managed by the [@clayne/message-box](https://github.com/clayne11/node-message-box) package. You can set global defaults using `MessageBox.defaults`, and you can access the instance used by a schema at `simpleSchemaInstance.messageBox`;
 
 ## Other Validation Context Methods
 
